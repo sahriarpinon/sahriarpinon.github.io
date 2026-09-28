@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Delete your account — DigiGaan</title>
+    <meta name="description" content="Permanently delete your DigiGaan account and all synced data.">
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="privacy-page">
+<header class="site-header">
+    <div class="container nav">
+        <a class="brand" href="/">
+            <img src="assets/logo.png" alt="DigiGaan logo">
+            <span>DigiGaan</span>
+        </a>
+        <nav class="nav-links" aria-label="Main navigation">
+            <a class="whatsapp" href="https://chat.whatsapp.com/BF9Pe2omPZk9rFy3TcB7FJ" target="_blank" rel="noopener">Join our WhatsApp</a>
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/delete-account.html" class="active">Delete Account</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="privacy-hero">
+        <div class="hero-glow glow-one"></div>
+        <div class="hero-glow glow-two"></div>
+        <div class="container">
+            <p class="eyebrow">DigiGaan Account</p>
+            <h1>Delete your<br>account</h1>
+            <p class="privacy-intro">Permanently delete your DigiGaan account and all data synced to it. You do not need the app installed to use this page.</p>
+        </div>
+    </section>
+
+    <section class="privacy-content">
+        <div class="container">
+            <div class="privacy-layout">
+                <aside class="privacy-sidebar">
+                    <div class="toc-card">
+                        <div class="toc-title">Account deletion</div>
+                        <a href="#deleted">What gets deleted</a>
+                        <a href="#not-deleted">What cannot be deleted</a>
+                        <a href="#delete">Delete now</a>
+                        <a href="#email">Email request</a>
+                    </div>
+                </aside>
+
+                <div class="privacy-document">
+                    <section id="deleted" class="policy-card">
+                        <h2><span>01</span>What gets deleted</h2>
+                        <p>When you permanently delete your DigiGaan account, the following account-related data is removed:</p>
+                        <ul>
+                            <li>Your account profile, including email, name, and profile picture held by DigiGaan</li>
+                            <li>Your favorite songs</li>
+                            <li>Your recently played songs</li>
+                            <li>The record of devices signed in to your account</li>
+                        </ul>
+                    </section>
+
+                    <section id="not-deleted" class="policy-card">
+                        <h2><span>02</span>What cannot be deleted here</h2>
+                        <p>Anonymous crash reports and aggregate usage statistics are not linked to your account, so they cannot be looked up or removed individually.</p>
+                        <p>They are not identifiable as yours and expire automatically:</p>
+                        <ul>
+                            <li>Crash reports within 90 days</li>
+                            <li>Analytics within 14 months</li>
+                        </ul>
+                        <p>See the <a href="/privacy.html">Privacy Policy</a> for more detail.</p>
+                    </section>
+
+                    <section id="delete" class="policy-card contact-card">
+                        <h2><span>03</span>Delete now</h2>
+                        <p>Sign in with the Google account you use in DigiGaan. Signing in here is only used to verify your identity.</p>
+                        <p>After you confirm the deletion, your DigiGaan account and all synced account data will be permanently removed.</p>
+
+                        <div id="status" class="status" hidden></div>
+
+                        <div id="step-signin">
+                            <button id="btn-signin" class="btn btn-primary" type="button">Sign in with Google</button>
+                        </div>
+
+                        <div id="step-confirm" hidden>
+                            <div class="account">
+                                <img id="acct-photo" alt="" hidden>
+                                <div class="who">
+                                    <strong id="acct-name"></strong>
+                                    <span id="acct-email"></span>
+                                </div>
+                            </div>
+
+                            <p><strong>This cannot be undone.</strong> Your account and all synced data will be permanently removed.</p>
+
+                            <div class="confirm-row">
+                                <input type="checkbox" id="confirm-box">
+                                <label for="confirm-box">I understand this permanently deletes my DigiGaan account and all of my synced data.</label>
+                            </div>
+
+                            <div class="actions">
+                                <button id="btn-delete" class="btn btn-danger" type="button" disabled>Delete my account</button>
+                                <button id="btn-cancel" class="btn btn-secondary" type="button">Cancel</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="email" class="policy-card">
+                        <h2><span>04</span>Prefer to email us?</h2>
+                        <p>You can also request deletion by emailing <a href="mailto:digigaan@gmail.com">digigaan@gmail.com</a> from your account address with the subject <strong>"Delete my account"</strong>.</p>
+                        <p>We complete these requests within 30 days.</p>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="community">
+        <div class="container community-inner">
+            <div>
+                <p class="eyebrow">Need help?</p>
+                <h2>We're here to help.</h2>
+                <p>If you have trouble deleting your account, contact us and we'll help you complete the process.</p>
+            </div>
+            <a class="btn btn-light" href="mailto:digigaan@gmail.com">Contact DigiGaan</a>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-top">
+            <div>
+                <div class="brand footer-brand">
+                    <img src="assets/logo.png" alt="DigiGaan logo">
+                    <span>DigiGaan</span>
+                </div>
+                <p>Building simple, useful digital experiences for everyone.</p>
+            </div>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/privacy.html">Privacy Policy</a>
+                <a href="/delete-account.html">Delete Account</a>
+                <a href="https://chat.whatsapp.com/BF9Pe2omPZk9rFy3TcB7FJ" target="_blank" rel="noopener">WhatsApp</a>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <span>© 2026 DigiGaan</span>
+            <span>Gitabitan — গীতবিতান</span>
+        </div>
+    </div>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signOut,
+    deleteUser,
+    reauthenticateWithPopup
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+    getDatabase,
+    ref,
+    remove
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBrmDTkKtHmDZyUCmR6FPFfNAsBZQWGvNs",
+    authDomain: "gitabitanv2.firebaseapp.com",
+    databaseURL: "https://gitabitanv2-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "gitabitanv2",
+    appId: "1:409688549804:web:5a9076950f22b1eed3f209"
+};
+
+const USER_PATHS = [
+    "users/$uid"
+];
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+const provider = new GoogleAuthProvider();
+
+provider.setCustomParameters({
+    prompt: "select_account"
+});
+
+const el = (id) => document.getElementById(id);
+const statusBox = el("status");
+
+function say(message, kind) {
+    statusBox.textContent = message;
+    statusBox.className = "status" + (kind ? " " + kind : "");
+    statusBox.hidden = false;
+}
+
+function clearStatus() {
+    statusBox.hidden = true;
+}
+
+function showConfirm(user) {
+    el("acct-name").textContent = user.displayName || "Signed in";
+    el("acct-email").textContent = user.email || "";
+
+    const photo = el("acct-photo");
+
+    if (user.photoURL) {
+        photo.src = user.photoURL;
+        photo.hidden = false;
+    } else {
+        photo.hidden = true;
+    }
+
+    el("step-signin").hidden = true;
+    el("step-confirm").hidden = false;
+    el("confirm-box").checked = false;
+    el("btn-delete").disabled = true;
+}
+
+function showSignIn() {
+    el("step-confirm").hidden = true;
+    el("step-signin").hidden = false;
+}
+
+el("btn-signin").addEventListener("click", async () => {
+    clearStatus();
+    el("btn-signin").disabled = true;
+
+    try {
+        const result = await signInWithPopup(auth, provider);
+        showConfirm(result.user);
+    } catch (err) {
+        if (err.code === "auth/popup-closed-by-user" || err.code === "auth/cancelled-popup-request") {
+            say("Sign-in was cancelled.", null);
+        } else if (err.code === "auth/unauthorized-domain") {
+            say("This site is not yet authorized for sign-in. Please email digigaan@gmail.com and we will delete your account manually.", "error");
+        } else {
+            say("Could not sign in: " + (err.message || err.code), "error");
+        }
+    } finally {
+        el("btn-signin").disabled = false;
+    }
+});
+
+el("confirm-box").addEventListener("change", (e) => {
+    el("btn-delete").disabled = !e.target.checked;
+});
+
+el("btn-cancel").addEventListener("click", async () => {
+    await signOut(auth);
+    clearStatus();
+    showSignIn();
+});
+
+el("btn-delete").addEventListener("click", async () => {
+    const user = auth.currentUser;
+
+    if (!user) {
+        say("Your session expired. Please sign in again.", "error");
+        showSignIn();
+        return;
+    }
+
+    el("btn-delete").disabled = true;
+    el("btn-cancel").disabled = true;
+    say("Deleting your data…", null);
+
+    try {
+        for (const path of USER_PATHS) {
+            await remove(ref(db, path.replace("$uid", user.uid)));
+        }
+
+        try {
+            await deleteUser(user);
+        } catch (err) {
+            if (err.code === "auth/requires-recent-login") {
+                say("Please confirm it is you to finish deleting your account.", null);
+                await reauthenticateWithPopup(auth.currentUser, provider);
+                await deleteUser(auth.currentUser);
+            } else {
+                throw err;
+            }
+        }
+
+        el("step-confirm").hidden = true;
+        el("step-signin").hidden = true;
+        say("Your account and all synced data have been permanently deleted.", "done");
+    } catch (err) {
+        say(
+            "We could not finish deleting your account: " +
+            (err.message || err.code) +
+            " — please email digigaan@gmail.com and we will complete it manually.",
+            "error"
+        );
+
+        el("btn-delete").disabled = false;
+        el("btn-cancel").disabled = false;
+    }
+});
+</script>
+
+</body>
+</html>
