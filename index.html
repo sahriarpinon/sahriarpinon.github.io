@@ -1,208 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="DigiGaan — creators of Gitabitan (গীতবিতান), a digital companion for Rabindra Sangeet lovers.">
-  <title>DigiGaan — Gitabitan | গীতবিতান</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-  <header class="site-header">
-    <div class="container nav">
-      <a class="brand" href="/">
-        <img src="assets/logo.png" alt="DigiGaan logo">
-        <span>DigiGaan</span>
-      </a>
-
-      <nav class="nav-links" aria-label="Main navigation">
-        <a class="whatsapp" href="https://chat.whatsapp.com/BF9Pe2omPZk9rFy3TcB7FJ" target="_blank" rel="noopener">
-          Join our WhatsApp
-        </a>
-        <a href="/privacy.html">Privacy Policy</a>
-        <a href="/delete-account.html">Delete your account</a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="hero-glow glow-one"></div>
-      <div class="hero-glow glow-two"></div>
-
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">A DigiGaan app</p>
-          <h1>Gitabitan<br><span>গীতবিতান</span></h1>
-          <p class="hero-text">
-            A simple, thoughtful digital companion for discovering, learning,
-            and enjoying the songs of Rabindranath Tagore.
-          </p>
-
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.DigiGaan.gitabitan&hl=en" target="_blank" rel="noopener">
-              Get it on Google Play
-              <span>↗</span>
-            </a>
-            <a class="btn btn-secondary" href="#apps">Explore the apps</a>
-          </div>
-
-          <div class="availability">
-            <span class="status-dot"></span>
-            Available on Android
-            <span class="divider">•</span>
-            iOS coming soon
-          </div>
+<!doctype html>
+<html lang="bn">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Gitabitan — Firestore Viewer</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="app">
+            <aside class="sidebar">
+                <div class="brand">
+                    <div class="brand-icon">গী</div>
+                    <div>
+                        <h1>Gitabitan</h1>
+                        <span>Firestore Viewer</span>
+                    </div>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search songs..." autocomplete="off" />
+                </div>
+                <div class="filters">
+                    <select id="porjayFilter">
+                        <option value="">All Porjay</option>
+                    </select>
+                    <select id="letterFilter">
+                        <option value="">All Letters</option>
+                    </select>
+                </div>
+                <div class="song-count" id="songCount">Loading songs...</div>
+                <div class="song-list" id="songList"><div class="loading">Loading...</div></div>
+            </aside>
+            <main class="main">
+                <header class="topbar">
+                    <div>
+                        <div class="breadcrumb">Firestore / songs</div>
+                        <h2 id="pageTitle">Select a song</h2>
+                    </div>
+                    <button id="refreshBtn" class="refresh-btn">↻ Refresh</button>
+                </header>
+                <div id="errorMessage" class="error-message hidden"></div>
+                <section id="emptyState" class="empty-state">
+                    <div class="empty-icon">♪</div>
+                    <h2>Select a song</h2>
+                    <p>Select a song from the list to view its Firestore data.</p>
+                </section>
+                <section id="songView" class="song-view hidden">
+                    <div class="song-header">
+                        <div class="song-number" id="songNumber"></div>
+                        <div class="song-title-area">
+                            <h1 id="songTitle"></h1>
+                            <div class="song-subtitle" id="songSubtitle"></div>
+                        </div>
+                    </div>
+                    <div class="metadata-grid">
+                        <div class="info-card"><span class="label">পর্যায়</span><strong id="porjay"></strong></div>
+                        <div class="info-card">
+                            <span class="label">উপপর্যায়</span><strong id="upoPorjay"></strong>
+                        </div>
+                        <div class="info-card"><span class="label">রাগ</span><strong id="raag"></strong></div>
+                        <div class="info-card"><span class="label">তাল</span><strong id="taal"></strong></div>
+                        <div class="info-card">
+                            <span class="label">রচনার বছর</span><strong id="writeYear"></strong>
+                        </div>
+                        <div class="info-card"><span class="label">প্রকাশনা</span><strong id="publish"></strong></div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-header"><h3>Lyrics</h3></div>
+                        <div class="lyrics" id="lyrics"></div>
+                        <div id="lyricChangeContainer" class="note hidden">
+                            <strong>পরিবর্তন:</strong><span id="lyricChange"></span>
+                        </div>
+                        <div id="footnoteContainer" class="note hidden">
+                            <strong>Footnote:</strong><span id="footnote"></span>
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-header"><h3>Song Information</h3></div>
+                        <div class="details-grid">
+                            <div class="detail"><span>Document ID</span><strong id="documentId"></strong></div>
+                            <div class="detail"><span>Song ID</span><strong id="songId"></strong></div>
+                            <div class="detail"><span>Song Index</span><strong id="songIndex"></strong></div>
+                            <div class="detail"><span>Song No.</span><strong id="songNo"></strong></div>
+                            <div class="detail"><span>Letter</span><strong id="letter"></strong></div>
+                            <div class="detail"><span>Age</span><strong id="age"></strong></div>
+                            <div class="detail"><span>Year</span><strong id="year"></strong></div>
+                            <div class="detail"><span>Written Year (English)</span><strong id="writeEn"></strong></div>
+                            <div class="detail"><span>Written Year (Bangla)</span><strong id="writeBn"></strong></div>
+                            <div class="detail"><span>Writing Place</span><strong id="writePlace"></strong></div>
+                            <div class="detail"><span>Notation Writer</span><strong id="notationWriter"></strong></div>
+                            <div class="detail"><span>Notation Info</span><strong id="notationInfo"></strong></div>
+                            <div class="detail"><span>Notation File</span><strong id="notationFile"></strong></div>
+                            <div class="detail"><span>Song Version</span><strong id="songVersion"></strong></div>
+                        </div>
+                    </div>
+                    <div class="content-card" id="notationCard">
+                        <div class="card-header"><h3>Notation</h3></div>
+                        <div class="notation-links">
+                            <a
+                                id="notationImageLink"
+                                class="action-btn"
+                                href="#"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                >Open Notation Image</a
+                            >
+                            <a
+                                id="notationPdfLink"
+                                class="action-btn primary"
+                                href="#"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                >Open PDF</a
+                            >
+                        </div>
+                    </div>
+                    <div class="content-card raw-card">
+                        <div class="card-header">
+                            <h3>Raw Firestore Document</h3>
+                            <button id="copyJsonBtn" class="small-btn">Copy JSON</button>
+                        </div>
+                        <pre id="rawJson"></pre>
+                    </div>
+                    <div class="navigation">
+                        <button id="previousBtn" class="nav-btn">← Previous</button>
+                        <button id="nextBtn" class="nav-btn">Next →</button>
+                    </div>
+                </section>
+            </main>
         </div>
-
-        <div class="hero-card">
-			<div class="music-orbit orbit-one"></div>
-			<div class="music-orbit orbit-two"></div>
-
-			<div class="app-icon">
-				<img src="assets/gitabitan-icon.png" alt="Gitabitan app icon">
-			</div>
-
-			<p class="app-name">Gitabitan - গীতবিতান</p>
-			<p class="app-subtitle">Rabindra Sangeet</p>
-		</div>
-      </div>
-    </section>
-
-    <section id="apps" class="section apps-section">
-      <div class="container">
-        <div class="section-heading">
-          <p class="eyebrow">Our app</p>
-          <h2>Music, wherever you are.</h2>
-          <p>Gitabitan is available now on Android, with the iOS version on its way.</p>
-        </div>
-
-        <div class="app-grid">
-          <article class="app-card available">
-            <div class="platform-icon android">A</div>
-            <div class="card-content">
-              <span class="card-label">Available now</span>
-              <h3>Gitabitan for Android</h3>
-              <p>
-                Explore Gitabitan from your Android device and keep the songs
-                you love close at hand.
-              </p>
-              <a class="text-link" href="https://play.google.com/store/apps/details?id=com.DigiGaan.gitabitan&hl=en" target="_blank" rel="noopener">
-                Get it on Google Play <span>→</span>
-              </a>
-            </div>
-          </article>
-
-          <article class="app-card coming-soon">
-            <div class="platform-icon apple">⌘</div>
-            <div class="card-content">
-              <span class="card-label">Coming soon</span>
-              <h3>Gitabitan for iOS</h3>
-              <p>
-                We are working on bringing Gitabitan to iPhone and iPad.
-                Stay connected for the launch.
-              </p>
-              <span class="text-link muted">Coming soon <span>→</span></span>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section about-section">
-      <div class="container about-grid">
-        <div>
-          <p class="eyebrow">About Gitabitan</p>
-          <h2>Keeping a timeless musical tradition close.</h2>
-        </div>
-        <div class="about-copy">
-          <p>
-            Gitabitan is built for Rabindra Sangeet students, artists, and
-            enthusiasts who want a convenient way to explore Tagore's songs
-            in the digital age.
-          </p>
-          <div class="feature-list">
-            <div><strong>Lyrics</strong><span>Find and read the songs you love.</span></div>
-            <div><strong>Notation</strong><span>Support your practice and learning.</span></div>
-            <div><strong>Song information</strong><span>Explore the background of the songs.</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reviews-section">
-      <div class="container">
-        <div class="section-heading centered">
-          <p class="eyebrow">From our users</p>
-          <h2>A growing community of music lovers.</h2>
-          <p>
-            These are sample review placeholders. Replace them with verified
-            Play Store reviews before publishing.
-          </p>
-        </div>
-
-        <div class="review-grid">
-          <article class="review-card">
-            <div class="stars">★★★★★</div>
-            <p>“A very useful companion for anyone learning and practicing Rabindra Sangeet.”</p>
-            <span>— Play Store reviewer</span>
-          </article>
-
-          <article class="review-card">
-            <div class="stars">★★★★★</div>
-            <p>“Clean, simple, and convenient. Having the songs available digitally makes practice easier.”</p>
-            <span>— Play Store reviewer</span>
-          </article>
-
-          <article class="review-card">
-            <div class="stars">★★★★★</div>
-            <p>“A thoughtful app for keeping the songs of Tagore accessible to the next generation.”</p>
-            <span>— Play Store reviewer</span>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="community">
-      <div class="container community-inner">
-        <div>
-          <p class="eyebrow">Stay connected</p>
-          <h2>Be part of the DigiGaan community.</h2>
-          <p>Join our WhatsApp community for updates, announcements, and the latest from Gitabitan.</p>
-        </div>
-        <a class="btn btn-light" href="https://chat.whatsapp.com/BF9Pe2omPZk9rFy3TcB7FJ" target="_blank" rel="noopener">
-          Join our WhatsApp <span>↗</span>
-        </a>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container footer-top">
-      <div>
-        <a class="brand footer-brand" href="/">
-          <img src="assets/logo.png" alt="DigiGaan logo">
-          <span>DigiGaan</span>
-        </a>
-        <p>Building simple digital experiences around music and culture.</p>
-      </div>
-
-      <div class="footer-links">
-        <a href="/privacy.html">Privacy Policy</a>
-        <a href="/delete-account.html">Delete your account</a>
-        <a href="https://chat.whatsapp.com/BF9Pe2omPZk9rFy3TcB7FJ" target="_blank" rel="noopener">WhatsApp</a>
-      </div>
-    </div>
-
-    <div class="container copyright">
-      <span>© 2026 DigiGaan. All rights reserved.</span>
-      <span>Gitabitan — গীতবিতান</span>
-    </div>
-  </footer>
-
-</body>
+        <script type="module" src="app.js"></script>
+    </body>
 </html>
