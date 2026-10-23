@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Gitabitan Firestore Editor</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <main id="authScreen" class="auth-screen">
+            <section class="auth-card">
+                <button id="authThemeToggleBtn" class="auth-theme-button" type="button" aria-label="Toggle night mode" aria-pressed="false">
+                    <span>Night mode</span><span class="theme-switch" aria-hidden="true"><span></span></span>
+                </button>
+                <div class="brand auth-brand">
+                    <h1>Gitabitan</h1>
+                    <span>Firestore Editor</span>
+                </div>
+                <h2>Sign in</h2>
+                <p>Choose the Firebase project, then sign in with your Google account.</p>
+                <label class="project-label" for="firebaseProjectSelect">Firebase project</label>
+                <select id="firebaseProjectSelect" class="project-select" required>
+                    <option value="" selected disabled>Choose a project</option>
+                    <option value="test">Test project (gitabitanv2test)</option>
+                    <option value="live">Live project (gitabitanv2)</option>
+                </select>
+                <button id="googleSignInBtn" class="google-sign-in" type="button">
+                    <span class="google-mark" aria-hidden="true">G</span>
+                    Continue with Google
+                </button>
+                <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+            </section>
+        </main>
+        <div id="appShell" class="app-shell hidden">
+            <aside class="sidebar">
+                <div class="brand">
+                    <h1>Gitabitan</h1>
+                    <span>Firestore Editor</span>
+                </div>
+                <input id="searchInput" type="search" placeholder="Search songs..." />
+                <div class="filter-row">
+                    <select id="porjayFilter">
+                        <option value="">All Porjay</option>
+                    </select>
+                    <select id="letterFilter">
+                        <option value="">All Letters</option>
+                    </select>
+                </div>
+                <div id="songCount" class="song-count"></div>
+                <div id="songList" class="song-list"></div>
+            </aside>
+            <main class="main">
+                <header class="topbar">
+                    <div>
+                        <h2 id="pageTitle">Select a song</h2>
+                        <span id="saveStatus">Ready</span>
+                    </div>
+                    <div class="topbar-actions">
+                        <span id="signedInEmail"></span>
+                        <div class="settings-menu">
+                            <button id="settingsMenuBtn" class="settings-button" type="button" aria-label="More options" aria-haspopup="menu" aria-expanded="false" aria-controls="settingsDropdown">
+                                <svg class="more-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                    <circle cx="12" cy="5" r="1.8" />
+                                    <circle cx="12" cy="12" r="1.8" />
+                                    <circle cx="12" cy="19" r="1.8" />
+                                </svg>
+                            </button>
+                            <div id="settingsDropdown" class="settings-dropdown" role="menu" aria-labelledby="settingsMenuBtn" hidden>
+                                <button id="themeToggleBtn" class="settings-item theme-toggle-item" type="button" role="menuitemcheckbox" aria-checked="false">
+                                    <span>Night mode</span><span class="theme-switch" aria-hidden="true"><span></span></span>
+                                </button>
+                                <div class="settings-separator"></div>
+                                <div class="settings-heading">Data &amp; account</div>
+                                <button id="openJsonBtn" class="settings-item" type="button" role="menuitem">Open songs.json</button>
+                                <button id="createJsonBtn" class="settings-item" type="button" role="menuitem">Create songs.json</button>
+                                <input id="jsonFileInput" class="hidden" type="file" accept=".json,application/json" />
+                                <button id="refreshBtn" class="settings-item" type="button" role="menuitem">Update all data</button>
+                                <div class="settings-separator"></div>
+                                <button id="signOutBtn" class="settings-item sign-out-item" type="button" role="menuitem">Sign out</button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <section id="emptyState" class="empty-state">
+                    <h2>Select a song</h2>
+                    <p>Choose a song from the list to view and edit its Firestore data.</p>
+                </section>
+                <section id="songView" class="content hidden">
+                    <div class="song-heading">
+                        <div>
+                            <div id="songNumberHeading" class="eyebrow"></div>
+                            <h1 id="songTitleHeading"></h1>
+                        </div>
+                        <div class="edit-actions">
+                            <button id="refreshSongBtn">Update this song</button>
+                            <button id="editBtn" class="primary">Edit</button>
+                            <button id="cancelBtn" class="hidden">Cancel</button>
+                            <button id="saveBtn" class="primary hidden">Save Changes</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Song Information</h3>
+                        <div class="grid">
+                            <div class="field"><label>Document ID</label><input id="documentId" readonly /></div>
+                            <div class="field"><label>Song ID</label><input id="songId" readonly /></div>
+                            <div class="field"><label>Song Index</label><input id="songIndex" readonly /></div>
+                            <div class="field">
+                                <label>Song No</label><input id="editSongNo" /><span id="songNoDisplay"></span>
+                            </div>
+                            <div class="field">
+                                <label>Song Version</label><input id="editSongVersion" type="number" step="any" /><span
+                                    id="songVersionDisplay"
+                                ></span>
+                            </div>
+                            <div class="field">
+                                <label>Title</label><input id="editTitle" /><span id="titleDisplay"></span>
+                            </div>
+                            <div class="field">
+                                <label>Letter</label><input id="editLetter" /><span id="letterDisplay"></span>
+                            </div>
+                            <div class="field">
+                                <label>Porjay</label><input id="editPorjay" /><span id="porjayDisplay"></span>
+                            </div>
+                            <div class="field">
+                                <label>Upo Porjay</label><input id="editUpoPorjay" /><span
+                                    id="upo_porjayDisplay"
+                                ></span>
+                            </div>
+                            <div class="field">
+                                <label>Raag</label><input id="editRaag" /><span id="raagDisplay"></span>
+                            </div>
+                            <div class="field">
+                                <label>Taal</label><input id="editTaal" /><span id="taalDisplay"></span>
+                            </div>
+                            <div class="field">
+                                <label>Age</label><input id="editAge" /><span id="ageDisplay"></span>
+                            </div>
+                            <div class="field">
+                                <label>Year</label><input id="editYear" /><span id="yearDisplay"></span>
+                            </div>
+                            <div class="field">
+                                <label>Write English</label><input id="editWriteEn" /><span id="write_enDisplay"></span>
+                            </div>
+                            <div class="field">
+                                <label>Write Bengali</label><input id="editWriteBn" /><span id="write_bnDisplay"></span>
+                            </div>
+                            <div class="field">
+                                <label>Write Place</label><input id="editWritePlace" /><span
+                                    id="write_placeDisplay"
+                                ></span>
+                            </div>
+                            <div class="field">
+                                <label>Notation Writer</label><input id="editNotationWriter" /><span
+                                    id="notation_writerDisplay"
+                                ></span>
+                            </div>
+                            <div class="field">
+                                <label>Notation Info</label><input id="editNotationInfo" /><span
+                                    id="notation_infoDisplay"
+                                ></span>
+                            </div>
+                            <div class="field">
+                                <label>Notation File</label><input id="editNotationFile" /><span
+                                    id="notation_fileDisplay"
+                                ></span>
+                            </div>
+                            <div class="field">
+                                <label>Publish</label><input id="editPublish" /><span id="publishDisplay"></span>
+                            </div>
+                            <div class="field">
+                                <label>Notation URL</label><input id="editUrlNotation" /><span
+                                    id="urlNotationDisplay"
+                                ></span>
+                            </div>
+                            <div class="field">
+                                <label>Notation PDF URL</label><input id="editUrlNotationPdf" /><span
+                                    id="urlNotationPdfDisplay"
+                                ></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Lyrics</h3>
+                        <div id="lyricDisplay" class="display-block"></div>
+                        <textarea id="editLyric"></textarea>
+                    </div>
+                    <div class="card">
+                        <h3>Lyric Change</h3>
+                        <div id="lyricChangeDisplay" class="display-block"></div>
+                        <textarea id="editLyricChange"></textarea>
+                    </div>
+                    <div class="card">
+                        <h3>Footnote</h3>
+                        <div id="footnoteDisplay" class="display-block"></div>
+                        <textarea id="editFootnote"></textarea>
+                    </div>
+                    <div class="card nav-actions">
+                        <button id="prevBtn">← Previous</button><button id="nextBtn">Next →</button>
+                    </div>
+                    <div class="card">
+                        <h3>Raw Firestore Data</h3>
+                        <pre id="rawJson"></pre>
+                    </div>
+                </section>
+            </main>
+        </div>
+        <script type="module" src="app.js"></script>
+    </body>
+</html>
