@@ -359,6 +359,10 @@ pre{background:#2c251d;color:#f4eadb;border:1px solid #594b3e;border-radius:16px
 @media(max-width:650px){.auth-card{padding:28px}.topbar{background:var(--surface)}}
 
 .topbar-actions{gap:14px}
+.page-heading{display:flex;align-items:center;gap:10px;min-width:0}
+.page-heading-text{min-width:0}
+.open-song-nav,.close-song-nav{display:none}
+.sidebar-header{display:flex;align-items:center;justify-content:space-between}
 .settings-menu{position:relative}
 .settings-button{
     width:44px;height:44px;padding:10px;border:1px solid var(--rule);border-radius:50%;
@@ -423,4 +427,69 @@ pre{background:#2c251d;color:#f4eadb;border:1px solid #594b3e;border-radius:16px
 :root[data-theme="dark"] .settings-item.sign-out-item:hover{background:#422a24}
 :root[data-theme="dark"] .empty-state,:root[data-theme="dark"] #saveStatus,:root[data-theme="dark"] #signedInEmail,:root[data-theme="dark"] .eyebrow,:root[data-theme="dark"] .field label{color:var(--muted-ink)}
 :root[data-theme="dark"] .song-item.active{background:#62421f}
+
+@media(max-width:900px){
+    .topbar{height:auto;min-height:72px;padding:12px 18px;gap:12px}
+    .topbar-actions{flex-wrap:wrap;justify-content:flex-end}
+    #signedInEmail{max-width:260px;overflow-wrap:anywhere;text-align:right}
+    .content{padding:20px 18px}
+}
+
+@media(max-width:650px){
+    .auth-screen{min-height:100svh;padding:16px 12px;align-items:center}
+    .auth-card{width:min(100%,440px);padding:32px 20px 22px;border-radius:22px}
+    .auth-brand{padding-right:105px;margin-bottom:22px}
+    .auth-brand h1{font-size:24px}
+    .auth-card h2{font-size:25px}
+    .app-shell{display:block;min-height:100svh}
+    .sidebar{width:100%;height:auto;min-height:240px;max-height:44svh;padding:14px;gap:10px}
+    .sidebar .brand h1{font-size:22px}
+    .song-list{min-height:90px;overscroll-behavior:contain}
+    .topbar{height:auto;min-height:0;align-items:stretch;gap:10px;padding:12px 14px}
+    .topbar>div:first-child{min-width:0}
+    .topbar h2{overflow-wrap:anywhere}
+    .topbar-actions{width:100%;justify-content:space-between;flex-wrap:nowrap;gap:10px}
+    #signedInEmail{flex:1;min-width:0;max-width:none;text-align:left;font-size:11px}
+    .settings-dropdown{right:0}
+    .content{padding:16px 12px}
+    .song-heading{gap:12px;margin-bottom:12px}
+    .song-heading h1{font-size:25px;overflow-wrap:anywhere}
+    .edit-actions{width:100%;flex-wrap:wrap;gap:7px}
+    .edit-actions button{flex:1 1 auto;min-width:120px}
+    .card{padding:15px;margin-bottom:13px;border-radius:17px}
+    .card h3{font-size:16px}
+    .grid{grid-template-columns:minmax(0,1fr);gap:10px}
+    .field input,.field span{min-height:38px}
+    .field span{padding:8px}
+    .display-block{overflow-wrap:anywhere}
+    .nav-actions{gap:10px}
+    .nav-actions button{flex:1;min-width:0}
+    .empty-state{padding:70px 16px}
+    pre{max-height:55svh;white-space:pre-wrap;overflow-wrap:anywhere}
+
+    body.nav-open{overflow:hidden}
+    .sidebar{
+        position:fixed;inset:0 auto 0 0;z-index:61;width:min(88vw,370px);
+        height:100vh;height:100dvh;min-height:0;max-height:none;padding:18px 14px 14px;
+        transform:translateX(-105%);transition:transform .24s ease;box-shadow:0 18px 48px #0004
+    }
+    .app-shell.nav-open .sidebar{transform:translateX(0)}
+    .sidebar-header{flex:none}
+    .close-song-nav{display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:#3b3025;color:#f4eadb;font:30px/1 Arial,sans-serif}
+    .song-list{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain}
+    .sidebar-backdrop{display:none}
+    .app-shell.nav-open .sidebar-backdrop{display:block;position:fixed;inset:0;z-index:60;background:rgba(24,18,13,.58);backdrop-filter:blur(2px)}
+    .open-song-nav{display:grid;place-items:center;flex:none;width:40px;height:40px;padding:9px;border:1px solid var(--rule);border-radius:13px;background:var(--surface-warm);color:var(--ink)}
+    .open-song-nav svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+    .page-heading{width:100%;align-items:center}
+}
+
+@media(max-width:380px){
+    .auth-card{padding:30px 16px 20px}
+    .auth-theme-button{top:12px;right:12px}
+    .filter-row{grid-template-columns:1fr}
+    .topbar-actions{gap:7px}
+    .settings-button{width:40px;height:40px}
+    .edit-actions button{min-width:100%;}
+}
  

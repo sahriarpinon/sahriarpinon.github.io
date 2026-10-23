@@ -204,6 +204,21 @@ const settingsMenuButton = $("settingsMenuBtn");
 const settingsDropdown = $("settingsDropdown");
 const themeToggleButton = $("themeToggleBtn");
 const authThemeToggleButton = $("authThemeToggleBtn");
+const appShell = $("appShell");
+const songNavToggleButton = $("openSongNavBtn");
+const songNavCloseButton = $("closeSongNavBtn");
+const sidebarBackdrop = $("sidebarBackdrop");
+
+function setSongNavigationOpen(open) {
+    appShell.classList.toggle("nav-open", open);
+    document.body.classList.toggle("nav-open", open);
+    songNavToggleButton.setAttribute("aria-expanded", String(open));
+    if (open) closeSettingsMenu();
+}
+
+songNavToggleButton.addEventListener("click", () => setSongNavigationOpen(true));
+songNavCloseButton.addEventListener("click", () => setSongNavigationOpen(false));
+sidebarBackdrop.addEventListener("click", () => setSongNavigationOpen(false));
 
 function setNightMode(enabled, savePreference = true) {
     document.documentElement.dataset.theme = enabled ? "dark" : "light";
@@ -256,6 +271,10 @@ document.addEventListener("click", event => {
 
 document.addEventListener("keydown", event => {
     if (event.key === "Escape" && !settingsDropdown.hidden) closeSettingsMenu(true);
+    if (event.key === "Escape" && appShell.classList.contains("nav-open")) {
+        setSongNavigationOpen(false);
+        songNavToggleButton.focus();
+    }
 });
 
 async function handleAuthState(user) {
@@ -516,7 +535,10 @@ ${error.message}`);
 function selectSong(id) {
     if (editing && !confirm("You have unsaved changes. Discard them?")) return;
     const song = songs.find(s => s.id === id);
-    if (song) renderSong(song);
+    if (song) {
+        renderSong(song);
+        setSongNavigationOpen(false);
+    }
 }
 
 function moveSong(direction) {
