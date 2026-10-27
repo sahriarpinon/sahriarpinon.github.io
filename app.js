@@ -4,6 +4,7 @@ import {
     getAuth,
     GoogleAuthProvider,
     signInWithPopup,
+    reauthenticateWithPopup,
     signOut,
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
@@ -38,8 +39,18 @@ let db = null;
 let auth = null;
 let unsubscribeAuthState = null;
 
+function clearRemoteConfigToken(projectKey) {
+    if (!projectKey) return;
+    try {
+        sessionStorage.removeItem(`gitabitan-remote-config-token-${projectKey}`);
+    } catch (error) {
+        console.warn("Could not clear the Remote Config token:", error);
+    }
+}
+
 function selectFirebaseProject(projectKey) {
     if (!firebaseConfigs[projectKey]) throw new Error("Choose a Firebase project first.");
+    if (activeProjectKey && activeProjectKey !== projectKey) clearRemoteConfigToken(activeProjectKey);
     activeProjectKey = projectKey;
     if (!firebaseServices[projectKey]) {
         const projectApp = initializeApp(firebaseConfigs[projectKey], `gitabitan-${projectKey}`);
@@ -50,6 +61,38 @@ function selectFirebaseProject(projectKey) {
     }
     auth = firebaseServices[projectKey].auth;
     db = firebaseServices[projectKey].db;
+    try {
+        sessionStorage.setItem("gitabitan-active-project", projectKey);
+        sessionStorage.setItem("gitabitan-active-project-id", firebaseConfigs[projectKey].projectId);
+    } catch (error) {
+        console.warn("Could not save the selected Firebase project for this tab:", error);
+    }
+}
+
+async function loadRemoteConfigVersion() {
+    const label = $("projectVersionLabel");
+    const projectLabel = activeProjectKey === "live" ? "Live Project" : "Test Project";
+    label.textContent = `${projectLabel} | db_version = loading…`;
+    const accessToken = sessionStorage.getItem(`gitabitan-remote-config-token-${activeProjectKey}`);
+    if (!accessToken) {
+        label.textContent = `${projectLabel} | db_version = unavailable`;
+        return;
+    }
+
+    try {
+        const projectId = firebaseConfigs[activeProjectKey].projectId;
+        const response = await fetch(`https://firebaseremoteconfig.googleapis.com/v1/projects/${encodeURIComponent(projectId)}/remoteConfig`, {
+            headers: { Authorization: `Bearer ${accessToken}` }
+        });
+        if (!response.ok) throw new Error(`Remote Config request failed (HTTP ${response.status}).`);
+        const template = await response.json();
+        const version = template.parameters?.db_version?.defaultValue?.value
+            ?? Object.values(template.parameterGroups || {}).map(group => group.parameters?.db_version?.defaultValue?.value).find(value => value !== undefined);
+        label.textContent = `${projectLabel} | db_version = ${version ?? "not set"}`;
+    } catch (error) {
+        console.warn("Could not load Remote Config db_version:", error);
+        label.textContent = `${projectLabel} | db_version = unavailable`;
+    }
 }
 
 const editableFields = {
@@ -177,13 +220,25 @@ $("googleSignInBtn").addEventListener("click", async () => {
         if (unsubscribeAuthState) unsubscribeAuthState();
         selectFirebaseProject(projectKey);
         unsubscribeAuthState = onAuthStateChanged(auth, handleAuthState);
-        if (auth.currentUser) {
-            await handleAuthState(auth.currentUser);
-            return;
-        }
         const provider = new GoogleAuthProvider();
-        provider.setCustomParameters({ prompt: "select_account" });
-        await signInWithPopup(auth, provider);
+        // The Remote Config REST API accepts cloud-platform as an alternative scope.
+        provider.addScope("https://www.googleapis.com/auth/cloud-platform");
+        let result;
+        if (auth.currentUser) {
+            result = await reauthenticateWithPopup(auth.currentUser, provider);
+        } else {
+            provider.setCustomParameters({ prompt: "select_account" });
+            result = await signInWithPopup(auth, provider);
+        }
+        const googleCredential = GoogleAuthProvider.credentialFromResult(result);
+        if (googleCredential?.accessToken) {
+            try {
+                sessionStorage.setItem(`gitabitan-remote-config-token-${projectKey}`, googleCredential.accessToken);
+                void loadRemoteConfigVersion();
+            } catch (error) {
+                console.warn("Could not keep the Remote Config token in this tab:", error);
+            }
+        }
     } catch (error) {
         console.error(error);
         if (error.code === "auth/popup-closed-by-user" || error.code === "auth/cancelled-popup-request") {
@@ -281,8 +336,8 @@ async function handleAuthState(user) {
     if (user && user.emailVerified) {
         $("authScreen").classList.add("hidden");
         $("appShell").classList.remove("hidden");
-        const projectLabel = activeProjectKey === "live" ? "Live" : "Test";
-        $("signedInEmail").textContent = `${user.email || "Signed in"} · ${projectLabel} project`;
+        $("signedInEmail").textContent = user.email || "Signed in";
+        void loadRemoteConfigVersion();
         let isAdmin = false;
 
         try {
@@ -301,6 +356,7 @@ async function handleAuthState(user) {
             setStatus("Songs loaded. This account has no admin claim, so saving is disabled.", true);
         }
     } else {
+        clearRemoteConfigToken(activeProjectKey);
         $("editBtn").disabled = false;
         $("appShell").classList.add("hidden");
         $("authScreen").classList.remove("hidden");

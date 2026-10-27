@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div class="topbar-actions">
-                        <span id="signedInEmail"></span>
+                        <span id="projectVersionLabel" class="project-version-label">Project · db_version = …</span>
                         <div class="settings-menu">
                             <button id="settingsMenuBtn" class="settings-button" type="button" aria-label="More options" aria-haspopup="menu" aria-expanded="false" aria-controls="settingsDropdown">
                                 <svg class="more-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -88,6 +88,7 @@
                                 <input id="jsonFileInput" class="hidden" type="file" accept=".json,application/json" />
                                 <button id="refreshBtn" class="settings-item" type="button" role="menuitem">Update all data</button>
                                 <div class="settings-separator"></div>
+                                <div id="signedInEmail" class="settings-heading"></div>
                                 <button id="signOutBtn" class="settings-item sign-out-item" type="button" role="menuitem">Sign out</button>
                             </div>
                         </div>
